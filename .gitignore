@@ -1,5 +1,9 @@
+# je complète au fur et à mesure avec ce que je ne veux pas versionner
 *.html
 example_files/
+*_files
+
+# ci dessous c'était le chargement par défaut pratique de github
 
 # History files
 .Rhistory

@@ -1,0 +1,59 @@
+---
+title: "Des pingouins"
+format:
+  html:
+    toc: true
+    number-sections: true
+    toc-title: "Ma table des matières"
+    toc-location: left
+    df-print: kable # 
+    echo: false #don't include the source code in output
+params:
+  year_select: 2008
+  sex_select: "female"
+---
+
+# Titre 1 
+## Titre 2
+
+Vous lancez ce qmd en produisant le html avec render, si problème, vérifiez le
+contenu de chaque chunk.
+
+```{r setup}
+#| output: false
+# c'est bien de donner un titre à son chunk pour débugger ou paramétrer
+# et un titre différent par chunk
+library(palmerpenguins)
+library(tidyverse)
+penguins_filtre <- penguins %>% 
+  filter(year==params$year_select & sex == params$sex_select)
+summary(penguins_filtre)
+params$year_select
+```
+
+## Le poids moyen selon l'espèce
+```{r tableau_1}
+penguins_filtre %>% 
+  group_by(species) %>% 
+  summarize(poids_moyen_g=mean(body_mass_g, na.rm = TRUE))
+```
+
+
+## Un graphique
+```{r plot_1}
+#| warning: false
+ggplot(penguins, aes(x = flipper_length_mm,
+                            y = body_mass_g)) +
+  geom_point(aes(color = sex)) +
+  scale_color_manual(values = c("darkorange","cyan4"), na.translate = FALSE) +
+  labs(title = "Penguin flipper and body mass",
+       subtitle = "Dimensions for male and female Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+       x = "Flipper length (mm)",
+       y = "Body mass (g)",
+       color = "Penguin sex") +
+  theme(legend.position = "bottom",
+        plot.title.position = "plot",
+        plot.caption = element_text(hjust = 0, face= "italic"),
+        plot.caption.position = "plot") +
+  facet_wrap(~species)
+```
