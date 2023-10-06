@@ -9,7 +9,7 @@ format:
     df-print: kable # 
     echo: false #don't include the source code in output
 params:
-  year_select: 2008
+#  year_select: 2008
   sex_select: "female"
 ---
 
@@ -26,7 +26,7 @@ contenu de chaque chunk.
 library(palmerpenguins)
 library(tidyverse)
 penguins_filtre <- penguins %>% 
-  filter(year==params$year_select & sex == params$sex_select)
+  filter(sex == params$sex_select)
 summary(penguins_filtre)
 params$year_select
 ```
