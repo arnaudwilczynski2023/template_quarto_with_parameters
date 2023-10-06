@@ -1,0 +1,28 @@
+---
+title: "My Document"
+format:
+  html:
+    toc: true
+    number-sections: true
+params:
+  year_select = 2008
+---
+
+# Titre 1 
+## Titre 2
+
+Vous lancez ce qmd en produisant le html avec render, si problème, vérifiez le
+contenu de chaque chunk.
+
+## Un bout de code ou chunck exécutable
+
+```{r}
+#| echo: true
+library(palmerpenguins)
+library(tidyverse)
+summary(palmerpenguins::penguins)
+penguins %>% 
+  group_by(species) %>% 
+  summarize(mean(body_mass_g, na.rm = TRUE))
+# The `echo: false` option disables the printing of code (only output is displayed).
+```
