@@ -6,33 +6,46 @@ format:
     number-sections: true
     toc-title: "Ma table des matières"
     toc-location: left
-    df-print: kable # 
+    df-print: kable # kable ou DT rendent les data frame plus jolis, pour les qmd
+    # kable est dispo dès la configuration de la page
     echo: false #don't include the source code in output
 params:
-#  year_select: 2008
+  year_select: 2008
   sex_select: "female"
 ---
 
-# Titre 1 
-## Titre 2
 
-Vous lancez ce qmd en produisant le html avec render, si problème, vérifiez le
-contenu de chaque chunk.
 
-```{r setup}
+```{r}
 #| output: false
+#| label: setup
 # c'est bien de donner un titre à son chunk pour débugger ou paramétrer
 # et un titre différent par chunk
 library(palmerpenguins)
 library(tidyverse)
 penguins_filtre <- penguins %>% 
-  filter(sex == params$sex_select)
+  filter(year == params$year_select & sex == params$sex_select)
 summary(penguins_filtre)
 params$year_select
+params$sex_select
 ```
 
-## Le poids moyen selon l'espèce
-```{r tableau_1}
+
+![](https://raw.githubusercontent.com/quarto-dev/quarto-web/main/docs/get-started/hello/rstudio/lter_penguins.png){style="float:right;" fig-alt="Illustration of three species of Palmer Archipelago penguins: Chinstrap, Gentoo, and Adelie. Artwork by @allison_horst." width="301"}
+
+# Un peu de blabla
+The `penguins` data from the [**palmerpenguins**](https://allisonhorst.github.io/palmerpenguins "palmerpenguins R package") package contains size measurements for `r nrow(penguins)` penguins from three species observed on three islands in the Palmer Archipelago, Antarctica.
+
+# Des sorties disposées en onglets (tabset html)
+::: {.panel-tabset}
+
+## Poids moyen
+::: {.callout-note}
+Vous avez sélectionné les pingouins  de l'année `r params$year_select` et de sexe
+"`r params$sex_select`".
+:::
+```{r}
+#| label: tableau_poids
 penguins_filtre %>% 
   group_by(species) %>% 
   summarize(poids_moyen_g=mean(body_mass_g, na.rm = TRUE))
@@ -40,7 +53,8 @@ penguins_filtre %>%
 
 
 ## Un graphique
-```{r plot_1}
+```{r }
+#| label: graph_nageoires
 #| warning: false
 ggplot(penguins, aes(x = flipper_length_mm,
                             y = body_mass_g)) +
@@ -57,3 +71,4 @@ ggplot(penguins, aes(x = flipper_length_mm,
         plot.caption.position = "plot") +
   facet_wrap(~species)
 ```
+:::
